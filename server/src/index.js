@@ -14,6 +14,13 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", service: "inkwell-api" });
 });
 
+// Reports the API's own version so clients and deploy tooling can confirm
+// which build is answering. Kept as a literal for now: there is no release
+// process to read it from yet (YAGNI).
+app.get("/api/version", (req, res) => {
+  res.status(200).json({ version: "0.1.0" });
+});
+
 app.listen(PORT, () => {
   console.log(`Inkwell API listening on port ${PORT}`);
 });
