@@ -41,7 +41,8 @@ export const AuthService = {
     }
 
     const tokens = TokenService.issueTokens(user);
-    return { user, ...tokens };
+    const userPublic = { id: user.id, email: user.email, displayName: user.displayName };
+    return { user: userPublic, ...tokens };
   },
 
   async login({ email, password }) {
@@ -56,7 +57,8 @@ export const AuthService = {
     }
 
     const tokens = TokenService.issueTokens(user);
-    return { user, ...tokens };
+    const userPublic = { id: user.id, email: user.email, displayName: user.displayName };
+    return { user: userPublic, ...tokens };
   },
 };
 
