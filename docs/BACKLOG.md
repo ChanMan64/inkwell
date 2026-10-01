@@ -13,6 +13,8 @@ Definition of Done: see README.md
 | US-07 | As an author, I want basic analytics... | Low | 5 | Backlog | |
 | US-08 | As a registered user, I want to reset my password, so that I can get back into my account if I forget it and change it for security reasons. | Medium | 5 | Backlog | |
 | US-09 | As a registered user, I want to change my username, so that I can keep my account secure and pick a unique name to use online. | Low | 3 | Backlog | |
+| US-10 | As an author, I want to tag my post with one or more topics, so that readers can discover it by subject. | Medium | 3 | Done | Implemented in Lecture 9 |
+| US-11 | As a reader, I want to search posts by keyword or tag, so that I can find content relevant to me. | Medium | 5 | Done | Implemented in Lecture 9 |
 
 Estimation notes
 
