@@ -9,10 +9,7 @@ export const PostRepository = {
     });
   },
 
-  // Called by PostService.publish() (Lecture 9): creates the post and its
-  // tags in one step. Tags are connectOrCreate so the same tag name is
-  // reused across posts instead of duplicated.
-  createWithTags({ authorId, title, body, tagNames, status, publishedAt }) {
+  createWithTags({ authorId, title, body, status, publishedAt, tagNames }) {
     return prisma.post.create({
       data: {
         authorId,
