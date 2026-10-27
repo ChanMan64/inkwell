@@ -1,0 +1,28 @@
+{
+  "name": "inkwell",
+  "version": "1.0.0",
+  "description": "A backlog item is Done when:",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChanMan64/inkwell.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ChanMan64/inkwell/issues"
+  },
+  "homepage": "https://github.com/ChanMan64/inkwell#readme",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1"
+  }
+}
