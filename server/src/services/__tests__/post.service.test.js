@@ -2,7 +2,7 @@
 
 import { jest } from "@jest/globals";
 
-const mockPostRepository = { createWithTags: jest.fn(), searchPublished: jest.fn() };
+const mockPostRepository = { createWithTags: jest.fn(), searchPublished: jest.fn(), findPublished: jest.fn() };
 const mockEventBus = { emit: jest.fn() };
 
 jest.unstable_mockModule("../../repositories/post.repository.js", () => ({
@@ -71,4 +71,12 @@ describe("PostService.search", () => {
 
     expect(result.hasMore).toBe(true);
   });
+});
+
+test("Overload page request test", async () => {
+  mockPostRepository.findPublished.mockResolvedValue({ posts: [], hasMore: false });
+
+  await PostService.listPublished({ page: 1, pageSize: 1000 });
+
+  expect(mockPostRepository.findPublished).toHaveBeenCalledWith({ page: 1, pageSize: 20 });
 });

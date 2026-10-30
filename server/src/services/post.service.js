@@ -6,6 +6,7 @@ import { SubstringSearchStrategy } from "./search/substring-search.strategy.js";
 import { EventBus } from "../events/event-bus.js";
 
 const searchStrategy = SubstringSearchStrategy; // swap this line to change search behavior system-wide
+const MAX_PAGE_SIZE = 20;
 
 export const PostService = {
   async publish({ authorId, title, body, tagNames = [] }) {
@@ -29,6 +30,7 @@ export const PostService = {
   },
 
   async listPublished({ page = 1, pageSize = 10 }) {
+    pageSize = Math.min(pageSize, MAX_PAGE_SIZE);
     const { posts, hasMore } = await PostRepository.findPublished({
       page,
       pageSize,
@@ -37,6 +39,7 @@ export const PostService = {
   },
 
   async search({ query, page = 1, pageSize = 10 }) {
+    pageSize = Math.min(pageSize, MAX_PAGE_SIZE);
     return searchStrategy.search(query, { page, pageSize });
   },
 };
