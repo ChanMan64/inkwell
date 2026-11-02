@@ -42,4 +42,12 @@ export const PostService = {
     pageSize = Math.min(pageSize, MAX_PAGE_SIZE);
     return searchStrategy.search(query, { page, pageSize });
   },
+
+  async getById(id) {
+    return PostRepository.findById(id);
+  },
+
+  async delete(id) {
+    return PostRepository.deleteById(id);
+  },
 };
