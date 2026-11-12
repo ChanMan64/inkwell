@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## [0.5.0] - 2026-07-12
+## [0.5.0] - 2026-11-09
 
 ### Added
 - User registration and login
