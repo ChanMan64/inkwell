@@ -10,7 +10,7 @@
 // curl. This test creates its account the same way, via a direct API
 // call, then drives the real UI for the login/publish journey.
 
-import { test, expect, devices } from "@playwright/test";
+import { test, expect, devices, request as apiRequest } from "@playwright/test";
 
 const viewports = [
   { name: "mobile", viewport: devices["iPhone 13"].viewport },
@@ -18,26 +18,37 @@ const viewports = [
   { name: "desktop", viewport: { width: 1280, height: 800 } },
 ];
 
+// Verification fix: a fixed email/title collides across repeated
+// runs of this suite against the same dev database (no isolated
+// e2e database exists) -- register silently "fails" on a
+// duplicate but login still succeeds against the stale account,
+// and re-running the suite accumulates duplicate posts until
+// Playwright's strict-mode element matching breaks. A per-run
+// suffix sidesteps it.
+//
+// One account is registered per run and shared by every viewport
+// below. The auth rate limiter allows five requests per ten minutes
+// from one address, and registering plus logging in for three
+// viewports would be six.
+const runId = Date.now();
+let email;
+
+test.beforeAll(async ({}, testInfo) => {
+  email = `e2e-${runId}-w${testInfo.workerIndex}@example.com`;
+  const api = await apiRequest.newContext();
+  const registerRes = await api.post("http://localhost:4000/api/auth/register", {
+    data: { email, displayName: "E2E Tester", password: "correcthorse" },
+  });
+  expect(registerRes.ok()).toBe(true);
+  await api.dispose();
+});
+
 for (const viewport of viewports) {
   test.describe(`publish flow — ${viewport.name}`, () => {
     test.use({ viewport: viewport.viewport });
 
-    test("a registered user can log in and publish a post", async ({ page, request }) => {
-      // Verification fix: a fixed email/title collides across repeated
-      // runs of this suite against the same dev database (no isolated
-      // e2e database exists) -- register silently "fails" on a
-      // duplicate but login still succeeds against the stale account,
-      // and re-running the suite accumulates duplicate posts until
-      // Playwright's strict-mode element matching breaks. A per-run
-      // suffix sidesteps it.
-      const runId = Date.now();
-      const email = `e2e-${viewport.name}-${runId}@example.com`;
+    test("a registered user can log in and publish a post", async ({ page }) => {
       const title = `Hello from ${viewport.name} (${runId})`;
-
-      const registerRes = await request.post("http://localhost:4000/api/auth/register", {
-        data: { email, displayName: "E2E Tester", password: "correcthorse" },
-      });
-      expect(registerRes.ok()).toBe(true);
 
       await page.goto("http://localhost:5173/login");
 
